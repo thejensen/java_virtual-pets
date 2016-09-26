@@ -10,6 +10,7 @@ public class Monster {
   private int sleepLevel;
   private int playLevel;
 
+
   public static final int MAX_FOOD_LEVEL = 3;
   public static final int MAX_SLEEP_LEVEL = 8;
   public static final int MAX_PLAY_LEVEL = 12;
@@ -46,8 +47,6 @@ public class Monster {
   public int getFoodLevel(){
    return foodLevel;
   }
-
-  public static final int MIN_ALL_LEVELS = 0;
 
   @Override
   public boolean equals(Object otherMonster){
@@ -103,34 +102,25 @@ public class Monster {
     sleepLevel--;
   }
 
-  @Test
-  public void play_increasesMonsterPlayLevel(){
-    Monster testMonster = new Monster("Bubbles", 1);
-    testMonster.play();
-    assertTrue(testMonster.getPlayLevel() > (Monster.MAX_PLAY_LEVEL / 2));
-  }
-
-  @Test
-  public void sleep_increasesMonsterSleepLevel(){
-    Monster testMonster = new Monster("Bubbles", 1);
-    testMonster.sleep();
-    assertTrue(testMonster.getSleepLevel() > (Monster.MAX_SLEEP_LEVEL / 2));
-  }
-
-  @Test
-  public void feed_increasesMonsterFoodLevel(){
-    Monster testMonster = new Monster("Bubbles", 1);
-    testMonster.feed();
-    assertTrue(testMonster.getFoodLevel() > (Monster.MAX_FOOD_LEVEL / 2));
-  }
-
-  @Test
-  public void monster_foodLevelCannotGoBeyondMaxValue(){
-    Monster testMonster = new Monster("Bubbles", 1);
-    for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_FOOD_LEVEL + 2); i++){
-      testMonster.feed();
+  public void play(){
+    if (playLevel >= MAX_PLAY_LEVEL){
+      throw new UnsupportedOperationException("You cannot play with monster anymore!");
     }
-    assertTrue(testMonster.getFoodLevel() <= Monster.MAX_FOOD_LEVEL);
+    playLevel++;
+  }
+
+  public void sleep(){
+    if (sleepLevel >= MAX_SLEEP_LEVEL){
+      throw new UnsupportedOperationException("You cannot make your monster sleep anymore!");
+    }
+    sleepLevel++;
+  }
+
+  public void feed(){
+    if (foodLevel >= MAX_FOOD_LEVEL){
+      throw new UnsupportedOperationException("You cannot feed your monster anymore!");
+    }
+    foodLevel++;
   }
 
 }

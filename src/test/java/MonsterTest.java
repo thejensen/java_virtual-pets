@@ -118,18 +118,71 @@ public class MonsterTest {
     assertEquals(testMonster.isAlive(), false);
   }
 
-  public void play(){
-    playLevel++;
+  @Test
+  public void play_increasesMonsterPlayLevel(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    testMonster.play();
+    assertTrue(testMonster.getPlayLevel() > (Monster.MAX_PLAY_LEVEL / 2));
   }
 
-  public void sleep(){
-    sleepLevel++;
+  @Test
+  public void sleep_increasesMonsterSleepLevel(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    testMonster.sleep();
+    assertTrue(testMonster.getSleepLevel() > (Monster.MAX_SLEEP_LEVEL / 2));
   }
 
-  public void feed(){
-    foodLevel++;
+  @Test
+  public void feed_increasesMonsterFoodLevel(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    testMonster.feed();
+    assertTrue(testMonster.getFoodLevel() > (Monster.MAX_FOOD_LEVEL / 2));
   }
 
-  
+  @Test
+  public void monster_foodLevelCannotGoBeyondMaxValue(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_FOOD_LEVEL + 2); i++){
+      try {
+        testMonster.feed();
+      } catch (UnsupportedOperationException exception){ }
+    }
+    assertTrue(testMonster.getFoodLevel() <= Monster.MAX_FOOD_LEVEL);
+  }
+
+  // Usually, JUnit fails a test if it receive an exception of any kind. However, because we're specifically testing for an exception, we must let JUnit know that we're intentionally looking for that exception. That is, the test shouldn't fail if it receives an exception, it should pass as long as it receives the correct exception.
+  //
+  @Test(expected = UnsupportedOperationException.class)
+  public void feed_throwsExceptionIfFoodLevelIsAtMaxValue(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_FOOD_LEVEL); i++){
+      try {
+        testMonster.feed();
+      } catch (UnsupportedOperationException exception){ }
+    }
+    assertTrue(testMonster.getFoodLevel() <= Monster.MAX_FOOD_LEVEL);
+  }
+
+  @Test(expected = UnsupportedOperationException.class)
+  public void play_throwsExceptionIfPlayLevelIsAtMaxValue(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_PLAY_LEVEL); i++){
+      try {
+        testMonster.play();
+      } catch (UnsupportedOperationException exception){ }
+    }
+    assertTrue(testMonster.getPlayLevel() <= Monster.MAX_PLAY_LEVEL);
+  }
+
+  @Test
+  public void monster_sleepLevelCannotGoBeyondMaxValue(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_SLEEP_LEVEL); i++){
+      try {
+        testMonster.sleep();
+      } catch (UnsupportedOperationException exception){ }
+    }
+    assertTrue(testMonster.getSleepLevel() <= Monster.MAX_SLEEP_LEVEL);
+  }
 
 }
