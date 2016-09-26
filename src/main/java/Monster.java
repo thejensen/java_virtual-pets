@@ -6,10 +6,21 @@ public class Monster {
   private String name;
   private int personId;
   private int id;
+  private int foodLevel;
+  private int sleepLevel;
+  private int playLevel;
+
+  public static final int MAX_FOOD_LEVEL = 3;
+  public static final int MAX_SLEEP_LEVEL = 8;
+  public static final int MAX_PLAY_LEVEL = 12;
+  public static final int MIN_ALL_LEVELS = 0;
 
   public Monster(String name, int personId) {
     this.name = name;
     this.personId = personId;
+    playLevel = MAX_PLAY_LEVEL / 2;
+    sleepLevel = MAX_SLEEP_LEVEL / 2;
+    foodLevel = MAX_FOOD_LEVEL / 2;
   }
 
   public String getName(){
@@ -23,6 +34,20 @@ public class Monster {
   public int getId(){
     return id;
   }
+
+  public int getPlayLevel(){
+    return playLevel;
+  }
+
+  public int getSleepLevel(){
+    return sleepLevel;
+  }
+
+  public int getFoodLevel(){
+   return foodLevel;
+  }
+
+  public static final int MIN_ALL_LEVELS = 0;
 
   @Override
   public boolean equals(Object otherMonster){
@@ -61,6 +86,51 @@ public class Monster {
         .executeAndFetchFirst(Monster.class);
       return monster;
     }
+  }
+
+  public boolean isAlive() {
+    if (foodLevel <= MIN_ALL_LEVELS ||
+    playLevel <= MIN_ALL_LEVELS ||
+    sleepLevel <= MIN_ALL_LEVELS) {
+      return false;
+    }
+    return true;
+  }
+
+  public void depleteLevels(){
+    playLevel--;
+    foodLevel--;
+    sleepLevel--;
+  }
+
+  @Test
+  public void play_increasesMonsterPlayLevel(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    testMonster.play();
+    assertTrue(testMonster.getPlayLevel() > (Monster.MAX_PLAY_LEVEL / 2));
+  }
+
+  @Test
+  public void sleep_increasesMonsterSleepLevel(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    testMonster.sleep();
+    assertTrue(testMonster.getSleepLevel() > (Monster.MAX_SLEEP_LEVEL / 2));
+  }
+
+  @Test
+  public void feed_increasesMonsterFoodLevel(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    testMonster.feed();
+    assertTrue(testMonster.getFoodLevel() > (Monster.MAX_FOOD_LEVEL / 2));
+  }
+
+  @Test
+  public void monster_foodLevelCannotGoBeyondMaxValue(){
+    Monster testMonster = new Monster("Bubbles", 1);
+    for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_FOOD_LEVEL + 2); i++){
+      testMonster.feed();
+    }
+    assertTrue(testMonster.getFoodLevel() <= Monster.MAX_FOOD_LEVEL);
   }
 
 }
