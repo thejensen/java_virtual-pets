@@ -270,5 +270,17 @@ public class WaterMonsterTest {
     }
   }
 
+  @Test
+  public void water_recordsTimeLastWateredInDatabase() {
+    WaterMonster testWaterMonster = new WaterMonster("Dr. Bubbles", 1);
+    testWaterMonster.save();
+    testWaterMonster.water();
+    Timestamp savedWaterMonsterLastWater = WaterMonster.find(testWaterMonster.getId())
+    .getLastWater();
+    Timestamp rightNow = new Timestamp(new Date().getTime());
+    assertEquals(DateFormat.getDateTimeInstance().format(rightNow),
+                 DateFormat.getDateTimeInstance().format(savedWaterMonsterLastWater));
+  }
+
 
 }

@@ -1,11 +1,12 @@
 import java.util.Timer;
 import org.sql2o.*;
 import java.util.List;
+import java.sql.Timestamp;
 
 public class FireMonster extends Monster {
   private int fireLevel;
   public Timestamp lastKindling;
-  
+
   public static final int MAX_FIRE_LEVEL = 10;
   public static final String DATABASE_TYPE = "fire";
 
@@ -31,7 +32,9 @@ public class FireMonster extends Monster {
   public static List<FireMonster> all() {
    String sql = "SELECT * FROM monsters WHERE type='fire';";
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery(sql).executeAndFetch(FireMonster.class);
+      return con.createQuery(sql)
+      .throwOnMappingFailure(false)
+      .executeAndFetch(FireMonster.class);
     }
   }
 
@@ -40,6 +43,7 @@ public class FireMonster extends Monster {
       String sql = "SELECT * FROM monsters where id=:id";
       FireMonster monster = con.createQuery(sql)
         .addParameter("id", id)
+        .throwOnMappingFailure(false)
         .executeAndFetchFirst(FireMonster.class);
       return monster;
     }
