@@ -1,4 +1,3 @@
-import org.junit.*;
 import org.sql2o.*;
 import java.util.Date;
 import java.util.Timer;
@@ -6,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.TimerTask;
 import java.text.DateFormat;
 import static org.junit.Assert.*;
+import org.junit.*;
+
 
 public class FireMonsterTest {
 
@@ -278,7 +279,15 @@ public class FireMonsterTest {
     Timestamp savedFireMonsterLastKindling = FireMonster.find(testFireMonster.getId()).getLastKindling();
     Timestamp rightNow = new Timestamp(new Date().getTime());
     assertEquals(DateFormat.getDateTimeInstance().format(rightNow), DateFormat.getDateTimeInstance().format(savedFireMonsterLastKindling));
-
   }
+
+  @Test
+  public void delete_deletesAllFireMonstersFromDatabase_0() {
+    FireMonster testFireMonster = new FireMonster("Dr. Bubbles", 1);
+    testFireMonster.save();
+    testFireMonster.delete();
+    assertEquals(null, FireMonster.find(testFireMonster.getId()));
+  }
+
 
 }
